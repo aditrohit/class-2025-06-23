@@ -1,0 +1,59 @@
+---
+title: "Untitled"
+format: html
+execute:
+  echo: false
+---
+
+
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+```
+
+
+```{r}
+# Load libraries
+
+# Your data (first 10 rows shown as example)
+df <- tibble::tibble(
+  tract = c(
+    "Census Tract 1.01; Queens County; New York",
+    "Census Tract 1.02; Queens County; New York",
+    "Census Tract 1.04; Queens County; New York",
+    "Census Tract 10.01; New York County; New York",
+    "Census Tract 10.02; New York County; New York",
+    "Census Tract 1004; Kings County; New York",
+    "Census Tract 1006; Kings County; New York",
+    "Census Tract 1008.01; Queens County; New York",
+    "Census Tract 1008.03; Queens County; New York",
+    "Census Tract 1008.04; Queens County; New York"
+  ),
+  race = c("White", "White", "Black", "White", "Hispanic", "Black", "Black", "Black", "Black", "Black"),
+  med_income = c(124885, 213750, NA, 109352, 23658, 83872, 106250, 140521, 47271, 118220)
+)
+
+# Remove missing median income values
+df_clean <- df %>%
+  filter(!is.na(med_income))
+
+# Plot
+ggplot(df_clean, aes(x = race, y = med_income, fill = race)) +
+  geom_boxplot(alpha = 0.7, outlier.shape = NA) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Median Income by Race (Sample Census Tracts)",
+    x = "Race",
+    y = "Median Income (USD)",
+    fill = "Race"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
